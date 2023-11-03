@@ -9,7 +9,9 @@ import torch.nn as nn
 import torch.optim as optim
 from torchsummary import summary
 
-# from model import Net
+from model import Net
+
+# ===== LOADING DATA =====
 
 # define path to store dataset
 path = 'Datasets/mnist'
@@ -44,3 +46,40 @@ for train_image, train_target in zip(train_data, train_targets):
     if cv2.waitKey(0) & 0xFF == ord('q'):
         break
 cv2.destroyAllWindows()
+
+
+# define training hyperparameters
+# we will need these later
+
+batch_size_train = 64  # how many batches to split the train set into
+batch_size_test = 64  # how many batches to split the test set into
+
+
+
+# change the color of every pixel to a number between 0 and 1
+train_data = np.expand_dims(train_data, axis=1) / 255.0
+test_data = np.expand_dims(test_data, axis=1) / 255.0
+
+# split data into batches of size [(batch_size, 1, 28, 28) ...] (64 batches)
+train_batches = [np.array(train_data[i:i+batch_size_train]) for i in range(0, len(train_data), batch_size_train)]
+
+# split targets into batches of size [(batch_size) ...] (64 batches)
+train_target_batches = [np.array(train_targets[i:i+batch_size_train]) for i in range(0, len(train_targets), batch_size_train)]
+
+test_batches = [np.array(test_data[i:i+batch_size_test]) for i in range(0, len(test_data), batch_size_test)]
+test_target_batches = [np.array(test_targets[i:i+batch_size_test]) for i in range(0, len(test_targets), batch_size_test)]
+
+# ===== NETWORK STUFF =====
+
+n_epochs = 5  # number of epochs
+learning_rate = 0.001  # how quickly the network changes itself
+
+# create network
+network = Net()
+
+# uncomment to print network summary
+summary(network, (1, 28, 28), device="cpu")
+
+# define loss function and optimizer
+optimizer = optim.Adam(network.parameters(), lr=learning_rate)
+loss_function = nn.CrossEntropyLoss()
