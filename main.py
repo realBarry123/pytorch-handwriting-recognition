@@ -2,7 +2,7 @@ import os
 import cv2
 import numpy as np
 from tqdm import tqdm
-import requests, gzip, os, hashlib
+import requests, gzip, hashlib
 
 import torch
 import torch.nn as nn
@@ -11,13 +11,18 @@ from torchsummary import summary
 
 from model import Net
 
-# ===== LOADING DATA =====
+
+# ==================== LOADING DATA ================================================================================
 
 # define path to store dataset
 path = 'Datasets/mnist'
 
 
 def fetch(url):
+    """
+    :param url: the url of the dataset
+    :return: decompressed data in np array
+    """
     if os.path.exists(path) is False:
         os.makedirs(path)
 
@@ -47,14 +52,8 @@ for train_image, train_target in zip(train_data, train_targets):
         break
 cv2.destroyAllWindows()
 
-
-# define training hyperparameters
-# we will need these later
-
 batch_size_train = 64  # how many batches to split the train set into
 batch_size_test = 64  # how many batches to split the test set into
-
-
 
 # change the color of every pixel to a number between 0 and 1
 train_data = np.expand_dims(train_data, axis=1) / 255.0
@@ -69,7 +68,8 @@ train_target_batches = [np.array(train_targets[i:i+batch_size_train]) for i in r
 test_batches = [np.array(test_data[i:i+batch_size_test]) for i in range(0, len(test_data), batch_size_test)]
 test_target_batches = [np.array(test_targets[i:i+batch_size_test]) for i in range(0, len(test_targets), batch_size_test)]
 
-# ===== NETWORK STUFF =====
+
+# ==================== NETWORK STUFF ================================================================================
 
 n_epochs = 5  # number of epochs
 learning_rate = 0.001  # how quickly the network changes itself
@@ -77,9 +77,12 @@ learning_rate = 0.001  # how quickly the network changes itself
 # create network
 network = Net()
 
-# uncomment to print network summary
+# print network summary
 summary(network, (1, 28, 28), device="cpu")
 
-# define loss function and optimizer
+# optimizer: adjusts the weights of the network according to the learning rate
+# higher learning rate => bigger adjustments
 optimizer = optim.Adam(network.parameters(), lr=learning_rate)
+
+# loss function: evaluates how well the network is doing
 loss_function = nn.CrossEntropyLoss()
