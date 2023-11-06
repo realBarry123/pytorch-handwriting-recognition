@@ -21,7 +21,7 @@ path = 'Datasets/mnist'
 def fetch(url):
     """
     :param url: the url of the dataset
-    :return: decompressed data in np array
+    :return: np array of decompressed data
     """
     if os.path.exists(path) is False:
         os.makedirs(path)
@@ -86,3 +86,11 @@ optimizer = optim.Adam(network.parameters(), lr=learning_rate)
 
 # loss function: evaluates how well the network is doing
 loss_function = nn.CrossEntropyLoss()
+
+
+# ==================== TRAINING ================================================================================
+
+def train(epoch):
+
+    # set network to training mode
+    network.train()
