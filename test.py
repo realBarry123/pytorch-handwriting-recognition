@@ -2,7 +2,7 @@ import os
 import cv2
 import torch
 import numpy as np
-import requests, gzip, os, hashlib
+from random import randint
 
 from model import Net
 from fetch import fetchData
@@ -19,22 +19,20 @@ network.load_state_dict(torch.load("Models/network.pkl"))
 network.eval()  # set to evaluation mode
 
 
-# loop over test images
-for test_image, test_target in zip(test_data, test_targets):
+index = randint(0, 9999)
 
-    # normalize image and convert to tensor
-    inference_image = torch.from_numpy(test_image).float() / 255.0
-    inference_image = inference_image.unsqueeze(0).unsqueeze(0)
+test_image = test_data[index]
+test_target = test_targets[index]
 
-    # predict
-    output = network(inference_image)
-    pred = output.argmax(dim=1, keepdim=True)
-    prediction = str(pred.item())
+# normalize image and convert to tensor
+inference_image = torch.from_numpy(test_image).float() / 255.0
+inference_image = inference_image.unsqueeze(0).unsqueeze(0)
 
-    test_image = cv2.resize(test_image, (400, 400))
-    cv2.imshow(prediction, test_image)
-    key = cv2.waitKey(0)
-    if key == ord('q'):  # break on q key
-        break
+# predict
+output = network(inference_image)
+pred = output.argmax(dim=1, keepdim=True)
+prediction = str(pred.item())
 
-    cv2.destroyAllWindows()
+test_image = cv2.resize(test_image, (400, 400))
+cv2.imshow(prediction, test_image)
+cv2.waitKey()
