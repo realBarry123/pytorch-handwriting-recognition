@@ -10,38 +10,18 @@ import torch.optim as optim
 from torchsummary import summary
 
 from model import Net
-
+from fetch import fetchData
 
 # ==================== LOADING DATA ================================================================================
 
 # define path to store dataset
 path = 'Datasets/mnist'
 
-
-def fetch(url):
-    """
-    :param url: the url of the dataset
-    :return: np array of decompressed data
-    """
-    if os.path.exists(path) is False:
-        os.makedirs(path)
-
-    fp = os.path.join(path, hashlib.md5(url.encode('utf-8')).hexdigest())
-    if os.path.isfile(fp):
-        with open(fp, "rb") as f:
-            data = f.read()
-    else:
-        with open(fp, "wb") as f:
-            data = requests.get(url).content
-            f.write(data)
-    return np.frombuffer(gzip.decompress(data), dtype=np.uint8).copy()
-
-
 # load mnist dataset from yann.lecun.com, train data is of shape (60000, 28, 28) and targets are of shape (60000)
-train_data = fetch("http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz")[0x10:].reshape((-1, 28, 28))
-train_targets = fetch("http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz")[8:]
-test_data = fetch("http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz")[0x10:].reshape((-1, 28, 28))
-test_targets = fetch("http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz")[8:]
+train_data = fetchData("http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz")[0x10:].reshape((-1, 28, 28))
+train_targets = fetchData("http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz")[8:]
+test_data = fetchData("http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz")[0x10:].reshape((-1, 28, 28))
+test_targets = fetchData("http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz")[8:]
 
 # show images from dataset using OpenCV
 for train_image, train_target in zip(train_data, train_targets):
@@ -94,3 +74,25 @@ def train(epoch):
 
     # set network to training mode
     network.train()
+
+    loss_sum = 0
+    # create a progress bar
+    train_pbar = tqdm(zip(train_batches, train_target_batches), total=len(train_batches))
+    for index, (data, target) in enumerate(train_pbar, start=1):
+
+        # convert data to torch.FloatTensor
+        data = torch.from_numpy(data).float()
+        target = torch.from_numpy(target).long()
+
+        # zero the parameter gradients
+        optimizer.zero_grad()
+
+        # forward + backward + optimize
+        output = network(data)
+        loss = loss_function(output, target)
+        loss.backward()
+        optimizer.step()
+
+        # update progress bar with loss value
+        loss_sum += loss.item()
+        train_pbar.set_description(f"Epoch {epoch}, loss: {loss_sum / index:.4f}")

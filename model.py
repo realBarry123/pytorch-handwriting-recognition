@@ -12,6 +12,7 @@ import torch.nn.functional as F  # F is just a static class with nice functions 
 # [4, 5+8, 6+10+12, 12+15, 18]
 # [4, 13, 28, 27, 18]
 
+
 class Net(nn.Module):  # inherits nn.Module (base class for all nns)
 
     def __init__(self):
@@ -19,7 +20,7 @@ class Net(nn.Module):  # inherits nn.Module (base class for all nns)
         # kernel is the small grid that is moved in convolution
         self.conv1 = nn.Conv2d(in_channels=1, out_channels=10, kernel_size=5)
         self.conv2 = nn.Conv2d(in_channels=10, out_channels=20, kernel_size=5)
-        self.conv2_drop = nn.Dropout2d()
+        self.conv2_drop = nn.Dropout2d()  # dropout: chops random parts of the neural network to prevent overfitting
         self.fc1 = nn.Linear(in_features=320, out_feature=50)
         self.fc2 = nn.Linear(in_features=50, out_features=10)
 
