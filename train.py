@@ -1,8 +1,5 @@
-import os
-import cv2
 import numpy as np
 from tqdm import tqdm
-import requests, gzip, hashlib
 
 import torch
 import torch.nn as nn
@@ -10,7 +7,7 @@ import torch.optim as optim
 from torchsummary import summary
 
 from model import Net
-from fetch import fetchData
+from fetch import fetch_data
 
 # ==================== LOADING DATA ================================================================================
 
@@ -18,19 +15,10 @@ from fetch import fetchData
 path = 'Datasets/mnist'
 
 # load mnist dataset from yann.lecun.com, train data is of shape (60000, 28, 28) and targets are of shape (60000)
-train_data = fetchData("http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz")[0x10:].reshape((-1, 28, 28))
-train_targets = fetchData("http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz")[8:]
-test_data = fetchData("http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz")[0x10:].reshape((-1, 28, 28))
-test_targets = fetchData("http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz")[8:]
-
-# show images from dataset using OpenCV
-for train_image, train_target in zip(train_data, train_targets):
-    train_image = cv2.resize(train_image, (400, 400))
-    cv2.imshow("Image", train_image)
-    # if Q button break this loop
-    if cv2.waitKey(0) & 0xFF == ord('q'):
-        break
-cv2.destroyAllWindows()
+train_data = fetch_data("http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz")[0x10:].reshape((-1, 28, 28))
+train_targets = fetch_data("http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz")[8:]
+test_data = fetch_data("http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz")[0x10:].reshape((-1, 28, 28))
+test_targets = fetch_data("http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz")[8:]
 
 batch_size_train = 64  # how many batches to split the train set into
 batch_size_test = 64  # how many batches to split the test set into
@@ -71,7 +59,10 @@ loss_function = nn.CrossEntropyLoss()
 # ==================== TRAINING ================================================================================
 
 def train(epoch):
-
+    """
+    Trains the network for 1 epoch
+    :param epoch: the number of the current epoch
+    """
     # set network to training mode
     network.train()
 
@@ -97,5 +88,5 @@ def train(epoch):
         loss_sum += loss.item()
         train_pbar.set_description(f"Epoch {epoch}, loss: {loss_sum / index:.4f}")
 
-torch.save(network.state_dict(), "Models/network.pkl")
 
+torch.save(network.state_dict(), "Models/network.pkl")

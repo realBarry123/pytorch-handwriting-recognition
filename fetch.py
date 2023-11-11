@@ -1,10 +1,17 @@
-import os, requests, gzip, hashlib
+
+import os
+import requests, gzip, hashlib
 import numpy as np
 
-path = 'Datasets/mnist' # Path where to save the downloaded mnist dataset
+path = "Datasets/mnist" # Path where to save the downloaded mnist dataset
 
 
-def fetchData(url):
+def fetch_data(url):
+    """
+    Fetches a dataset and saves it in Datasets/mnist
+    :param url: the url of the dataset
+    :return: data formatted in a numpy array
+    """
     if os.path.exists(path) is False:
         os.makedirs(path)
 
