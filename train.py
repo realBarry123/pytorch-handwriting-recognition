@@ -88,5 +88,34 @@ def train(epoch):
         loss_sum += loss.item()
         train_pbar.set_description(f"Epoch {epoch}, loss: {loss_sum / index:.4f}")
 
+# create testing loop
+def test(epoch):
+    # set network to evaluation mode
+    network.eval()
+
+    correct, loss_sum = 0, 0
+    # create progress bar
+    val_pbar = tqdm(zip(test_batches, test_target_batches), total=len(test_batches))
+    with torch.no_grad():
+        for index, (data, target) in enumerate(val_pbar, start=1):
+
+            # convert data to torch.FloatTensor
+            data = torch.from_numpy(data).float()
+            target = torch.from_numpy(target).long()
+
+            # forward pass
+            output = network(data)
+
+            # update progress bar with loss and accuracy values
+            loss_sum += loss_function(output, target).item() / target.size(0)
+            pred = output.data.max(1, keepdim=True)[1]
+            correct += pred.eq(target.data.view_as(pred)).sum() / target.size(0)
+
+            val_pbar.set_description(f"val_loss: {loss_sum / index:.4f}, val_accuracy: {correct / index:.4f}")
+
+
+for epoch in range(1, n_epochs + 1):
+    train(epoch)
+    test(epoch)
 
 torch.save(network.state_dict(), "Models/network.pkl")
