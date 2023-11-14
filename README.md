@@ -4,11 +4,11 @@ This is me following a Pytorch MNIST recognition tutorial on [PyLessons](https:/
 
 ---
 
-So far, I have made the following changes to the code copied from the tutorial: 
+So far, I have made the following changes to the code from the tutorial: 
 - Add comments (to the best of my narrow understanding)
 - Minor refactoring
-- Add bugs
+- A slightly improved display system for the results
 
 ---
 
-It does not work, probably because I introduced bugs into the code
+It works!

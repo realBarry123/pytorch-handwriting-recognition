@@ -36,5 +36,5 @@ for test_image, test_target in zip(train_data, train_targets):
     key = cv2.waitKey(0)
     if key == ord('q'):  # break on q key
         break
-    
+
     cv2.destroyAllWindows()
