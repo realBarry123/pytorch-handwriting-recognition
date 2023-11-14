@@ -31,9 +31,10 @@ for test_image, test_target in zip(train_data, train_targets):
     prediction = str(pred.item())
 
     test_image = cv2.resize(test_image, (400, 400))
-    cv2.imshow(prediction, test_image)
+    test_image = cv2.putText(test_image, "Prediction: " + prediction, (10, 35), 2, 1, (255, 255, 255))
+    cv2.imshow("Pytorch MNIST Digit Recognition Test", test_image)
     key = cv2.waitKey(0)
     if key == ord('q'):  # break on q key
         break
-
+    
     cv2.destroyAllWindows()
