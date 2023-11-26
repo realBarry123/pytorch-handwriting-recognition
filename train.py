@@ -88,6 +88,7 @@ def train(epoch):
         loss_sum += loss.item()
         train_pbar.set_description(f"Epoch {epoch}, loss: {loss_sum / index:.4f}")
 
+
 # create testing loop
 def test(epoch):
     # set network to evaluation mode
