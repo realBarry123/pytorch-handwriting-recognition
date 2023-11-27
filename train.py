@@ -1,5 +1,6 @@
+
 import numpy as np
-from tqdm import tqdm
+from tqdm import tqdm  # progress bar
 
 import torch
 import torch.nn as nn

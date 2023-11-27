@@ -1,6 +1,6 @@
 
-import cv2
 import torch
+import cv2  # image display
 
 from model import Net
 from fetch import fetch_data

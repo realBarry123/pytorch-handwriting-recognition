@@ -1,9 +1,11 @@
 
 import os
-import requests, gzip, hashlib
 import numpy as np
+import requests  # for fetching url
+import gzip  # zip files
+import hashlib  # not sure what this does but something about imports
 
-path = "Datasets/mnist" # Path where to save the downloaded mnist dataset
+path = "Datasets/mnist"  # Path where to save the downloaded mnist dataset
 
 
 def fetch_data(url):

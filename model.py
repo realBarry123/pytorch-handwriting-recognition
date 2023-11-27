@@ -43,5 +43,4 @@ class Net(nn.Module):  # inherits nn.Module (base class for all nns)
 
         x = self.fc2(x)  # run through fully connected layer 2
         x = F.log_softmax(x, dim=1)  # softmax squishification
-        print(x)
         return x
