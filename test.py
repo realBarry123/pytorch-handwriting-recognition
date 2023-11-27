@@ -5,6 +5,7 @@ import torch
 from model import Net
 from fetch import fetch_data
 
+# fetching our data
 train_data = fetch_data("http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz")[0x10:].reshape((-1, 28, 28))
 train_targets = fetch_data("http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz")[8:]
 test_data = fetch_data("http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz")[0x10:].reshape((-1, 28, 28))
@@ -30,6 +31,7 @@ for test_image, test_target in zip(train_data, train_targets):
     pred = output.argmax(dim=1, keepdim=True)
     prediction = str(pred.item())
 
+    # show our beautiful results as an image
     test_image = cv2.resize(test_image, (400, 400))
     test_image = cv2.putText(test_image, "Prediction: " + prediction, (10, 35), 2, 1, (255, 255, 255))
     cv2.imshow("Pytorch MNIST Digit Recognition Test", test_image)

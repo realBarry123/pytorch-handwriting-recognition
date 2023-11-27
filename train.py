@@ -66,9 +66,10 @@ def train(epoch):
     # set network to training mode
     network.train()
 
-    loss_sum = 0
     # create a progress bar
+    loss_sum = 0  # progress counter
     train_pbar = tqdm(zip(train_batches, train_target_batches), total=len(train_batches))
+
     for index, (data, target) in enumerate(train_pbar, start=1):
 
         # convert data to torch.FloatTensor
@@ -82,7 +83,7 @@ def train(epoch):
         output = network(data)
         loss = loss_function(output, target)
         loss.backward()
-        optimizer.step()
+        optimizer.step()  # optimizer adjusts the network weights
 
         # update progress bar with loss value
         loss_sum += loss.item()
