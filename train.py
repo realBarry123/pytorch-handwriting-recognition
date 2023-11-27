@@ -79,10 +79,9 @@ def train(epoch):
         # zero the parameter gradients
         optimizer.zero_grad()
 
-        # forward + backward + optimize
-        output = network(data)
-        loss = loss_function(output, target)
-        loss.backward()
+        output = network(data)  # forward pass
+        loss = loss_function(output, target)  # loss function
+        loss.backward()  # use backpropagation to compute gradient
         optimizer.step()  # optimizer adjusts the network weights
 
         # update progress bar with loss value
