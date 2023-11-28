@@ -36,6 +36,11 @@ for test_image, test_target in zip(train_data, train_targets):
     # show our beautiful results as an image
     test_image = cv2.resize(test_image, (400, 400))
     test_image = cv2.putText(test_image, "Prediction: " + prediction, (10, 35), 2, 1, (255, 255, 255))
+    if pred == test_target:
+        test_image = cv2.putText(test_image, "Correct", (10, 70), 2, 0.8, (255, 255, 255))
+        # note: CV2 uses BGR
+    else:
+        test_image = cv2.putText(test_image, "Incorrect", (10, 70), 2, 0.8, (255, 255, 255))
     cv2.imshow("Pytorch MNIST Digit Recognition Test", test_image)
     key = cv2.waitKey(0)
     if key == ord('q'):  # break on q key
