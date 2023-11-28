@@ -19,7 +19,9 @@ network = Net()
 network.load_state_dict(torch.load("Models/network.pkl"))
 network.eval()  # set to evaluation mode
 
-# loop over test images
+
+# ==================== TESTING LOOP ================================================================================
+
 for test_image, test_target in zip(train_data, train_targets):
 
     # normalize image and convert to tensor
