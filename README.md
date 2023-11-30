@@ -1,14 +1,15 @@
 # 🤖 pytorch-handwriting-recognition
 
-This is me following a Pytorch MNIST recognition tutorial on [PyLessons](https://pylessons.com/pytorch-introduction)  
+This is me following a Pytorch MNIST handwritten digit recognition tutorial on [PyLessons](https://pylessons.com/pytorch-introduction)
 
 ---
 
-This code builds a CNN (convolutional neural network) with two convolutional layers and two linear layers. The network is trained for five epochs and can achieve an accuracy of above 98% in correctly indentifying digits.
+This code builds a CNN (convolutional neural network) with two convolutional layers and two fully-connected layers. The network is trained on the MNIST dataset for five epochs and can achieve an accuracy of above 98%.
 
 ---
 
-So far, I have made the following changes to the code from the tutorial: 
+I have made the following changes to the code from the tutorial: 
 - Add comments explaining the code from start to finish
-- Minor refactoring`
+- Write docstrings for functions
+- Minor refactoring
 - A slightly improved display system for the results
