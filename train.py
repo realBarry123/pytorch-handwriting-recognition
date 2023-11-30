@@ -92,6 +92,10 @@ def train(epoch):
 
 # create testing loop
 def test(epoch):
+    """
+    Tests the network for 1 epoch
+    :param epoch: the number of the current epoch
+    """
     # set network to evaluation mode
     network.eval()
 
