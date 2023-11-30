@@ -1,6 +1,6 @@
 # 🤖 pytorch-handwriting-recognition
 
-This is me following a Pytorch MNIST handwritten digit recognition tutorial on [PyLessons](https://pylessons.com/pytorch-introduction)
+This is me following a Pytorch MNIST handwritten digit recognition tutorial on [PyLessons.com](https://pylessons.com/pytorch-introduction).
 
 ---
 
